@@ -1,2 +1,59 @@
 # ELECTRICAL-LOAD-AND-BILLING
 Electrical Load Monitoring &amp; Billing Simulator
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+int main(){
+
+class Appliance {
+public:
+    string name;
+    double powerRating; // watts
+    double dailyUsageHours;
+    Appliance(string n, double pr, double hours) : name(n), powerRating(pr), dailyUsageHours(hours) {}
+    void display() {
+        cout << "Name: " << name << ", Power: " << powerRating << "W, Usage: " << dailyUsageHours << " hours/day\n";
+    }
+    double calculateEnergy() { 
+        return (powerRating * dailyUsageHours) / 1000; // kWh
+    }
+};
+    vector<Appliance> appliances;
+    int choice;
+    do {
+        cout << "1. Register appliance\n2. View appliances\n3. Exit\n";
+        cin >> choice;
+        if (choice == 1) {
+            string name;
+            double power, hours;
+            cout << "Enter name: ";
+            cin.ignore();
+            getline(cin, name);
+            if (name.empty()) {
+                cout << "Name cannot be empty!\n";
+                continue;
+            }
+            cout << "Enter power rating (W): ";
+            cin >> power;
+            if (power <= 0) {
+                cout << "Power must be greater than 0!\n";
+                continue;
+            }
+            cout << "Enter daily usage (hours): ";
+            cin >> hours;
+            if (hours < 0 || hours > 24) {
+                cout << "Hours must be between 0 and 24!\n";
+                continue;
+            }
+            appliances.push_back(Appliance(name, power, hours));
+        } else if (choice == 2) {
+            if (appliances.empty()) {
+                cout << "No appliances registered.\n";
+            } else {
+                for (auto& a : appliances) a.display();
+            }
+        }
+    } while (choice != 3);
+    return 0;
+}
